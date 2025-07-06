@@ -1,103 +1,143 @@
+"use client"
+
+import { MagnifyingGlassIcon, PlayIcon } from "@heroicons/react/16/solid";
 import Image from "next/image";
+import { useState } from "react";
+
+const songs = [
+  {
+    id: 1,
+    title: "노래 제목 노래 제목 노래 제목 노래 제목 노래 제목 노래 제목 노래 제목",
+    artist: "노래 가수",
+    image: "https://picsum.photos/700/700",
+  },
+  {
+    id: 2,
+    title: "노래 제목",
+    artist: "노래 가수",
+    image: "https://picsum.photos/700/700",
+  },
+  {
+    id: 3,
+    title: "노래 제목",
+    artist: "노래 가수",
+    image: "https://picsum.photos/700/700",
+  },
+  {
+    id: 4,
+    title: "노래 제목",
+    artist: "노래 가수",
+    image: "https://picsum.photos/700/700",
+  },
+  {
+    id: 5,
+    title: "노래 제목",
+    artist: "노래 가수",
+    image: "https://picsum.photos/700/700",
+  },
+  {
+    id: 6,
+    title: "노래 제목",
+    artist: "노래 가수",
+    image: "https://picsum.photos/700/700",
+  },
+]
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [imageErrors, setImageErrors] = useState<{[key: number]: boolean}>({});
+  const [mainImageError, setMainImageError] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleImageError = (id: number) => {
+    setImageErrors(prev => ({ ...prev, [id]: true }));
+  };
+
+  const handleMainImageError = () => {
+    setMainImageError(true);
+  };
+
+  return <main className="font-jua">
+    <header className="bg-white max-w-[1440px] mx-auto py-4 px-10">
+      <div className="flex justify-between items-center">
+        <div className="text-4xl font-bold">오늘의 노래</div>
+        <div className="flex items-center gap-2 w-[60%]">
+          <input type="text" placeholder="노래 검색" className="w-full border-2 border-gray-300 rounded-full px-4 py-2 focus:outline-none" />
+          <button className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600">
+            <MagnifyingGlassIcon className="w-6 h-6" />
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+        <div className="flex items-center gap-2">
+          <button className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600">로그인</button>
+          <button className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600">회원가입</button>
+        </div>
+      </div>
+    </header>
+    <section className="bg-white max-w-[1440px] mt-6 mx-auto py-4 px-10">
+      <div className="flex items-start gap-10">
+        <div className="flex-shrink-0 flex flex-col items-center">
+          <div className="relative w-[600px] h-[600px] rounded-2xl mb-10 overflow-hidden bg-gray-200 group">
+            {!mainImageError ? (
+              <>
+                <Image
+                  src="https://picsum.photos/700/700"
+                  alt="노래 이미지"
+                  fill
+                  className="object-cover group-hover:bg-gray-900"
+                  onError={handleMainImageError}
+                  priority
+                />
+                <div className="absolute inset-0 bg-transparent group-hover:bg-black/60 flex items-center justify-center">
+                  <PlayIcon className="w-20 h-20 text-white opacity-0 group-hover:opacity-100" />
+                </div>
+              </>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gray-300">
+                <div className="text-center">
+                  <div className="text-6xl mb-4">🎵</div>
+                  <div className="text-gray-600 font-medium">이미지를 불러올 수 없습니다</div>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="text-2xl font-bold mb-3">노래 제목</div>
+          <div className="text-sm text-gray-500">노래 가수</div>
+        </div>
+        <div className="flex-1 min-w-0 border-2 h-[700px] border-gray-300 rounded-2xl p-6 bg-gray-100 overflow-hidden">
+          <div className="flex flex-col h-full overflow-y-auto pr-2 scrollbar-hide gap-2">
+            {/* TODO: 노래 목록 무한 스크롤 */}
+            {songs.map((song) => (
+              <div key={song.id} className="flex items-center gap-2 hover:bg-gray-200 hover:rounded-2xl p-2 rounded-xl cursor-pointer group">
+                <div className="relative flex-shrink-0 w-[100px] h-[100px] rounded-xl overflow-hidden bg-gray-200 mr-3">
+                  {!imageErrors[song.id] ? (
+                    <>
+                      <Image
+                        src={song.image}
+                        alt={song.title}
+                        fill
+                        className="object-cover"
+                        onError={() => handleImageError(song.id)}
+                      />
+                      <div className="absolute inset-0 bg-transparent group-hover:bg-black/60 flex items-center justify-center">
+                        <PlayIcon className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 " />
+                      </div>
+                    </>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-300">
+                      <div className="text-center">
+                        <div className="text-2xl mb-1">🎵</div>
+                        <div className="text-xs text-gray-600">이미지 없음</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col min-w-0 flex-1">
+                  <div className="text-2xl font-bold leading-10 text-ellipsis line-clamp-1">{song.title}</div>
+                  <div className="text-lg text-gray-500 text-ellipsis line-clamp-1">{song.artist}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 }
