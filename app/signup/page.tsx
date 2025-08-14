@@ -1,11 +1,10 @@
 'use client';
 
 import { MagnifyingGlassIcon, UserIcon } from '@heroicons/react/16/solid';
-import Link from 'next/link';
 import { useState } from 'react';
 
 export default function Signup() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin] = useState(false);
 
   return (
     <main className='font-jua bg-purple-50 min-h-screen'>

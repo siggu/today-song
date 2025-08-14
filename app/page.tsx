@@ -79,7 +79,7 @@ const songs: Song[] = [
 ];
 
 export default function Home() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin] = useState(false);
   const [isLiked, setIsLiked] = useState<{ [key: number]: boolean }>({});
 
   const toggleLike = (songId: number) => {
@@ -270,7 +270,7 @@ export default function Home() {
               <div className='text-purple-600 cursor-pointer hover:text-purple-700 font-medium'>전체 보기</div>
             </div>
             <div className='grid grid-cols-4 gap-4'>
-              {songs.slice(0, 4).map((song, index) => (
+              {songs.slice(0, 4).map((song) => (
                 <div key={song.id} className='group relative cursor-pointer'>
                   <div className='bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer'>
                     <div className='relative mb-3'>
