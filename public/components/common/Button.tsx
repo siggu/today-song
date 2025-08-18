@@ -17,24 +17,24 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseClasses = 'rounded-full font-medium transition-all duration-300 cursor-pointer focus:outline-none';
-  
+
   const variants = {
     primary: 'bg-purple-500 text-white hover:bg-purple-600',
     secondary: 'border-2 border-purple-500 bg-white text-purple-500 hover:bg-gray-100',
     ghost: 'bg-white/90 hover:bg-white text-gray-400 hover:text-purple-500 hover:scale-105 shadow-md',
-    icon: 'rounded-full p-2 transition-all duration-300 shadow-md'
+    icon: 'rounded-full p-2 transition-all duration-300 shadow-md',
   };
 
   const sizes = {
     sm: 'px-2 py-1 text-xs',
     md: 'px-4 py-2',
-    lg: 'p-3'
+    lg: 'p-3',
   };
 
   const classes = clsx(
     baseClasses,
     variants[variant],
-    sizes[size],
+    variant !== 'icon' && sizes[size],
     fullWidth && 'w-full',
     className
   );
