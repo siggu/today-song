@@ -1,16 +1,13 @@
 'use client';
 
-import Header from '@/public/components/common/Header';
-import Button from '@/public/components/common/Button';
+import Header from '@/components/common/Header';
+import Button from '@/components/common/Button';
 import Link from 'next/link';
-import { useState } from 'react';
 
 export default function Signup() {
-  const [isLogin] = useState(false);
-
   return (
     <main className='font-jua bg-purple-50 min-h-screen'>
-      <Header isLogin={isLogin} />
+      <Header />
       <section className='max-w-[1440px] mx-auto h-[60vh] flex flex-col items-center justify-center gap-6'>
         <div className='flex flex-col items-center justify-center gap-10'>
           <div className='text-4xl font-bold'>회원가입</div>

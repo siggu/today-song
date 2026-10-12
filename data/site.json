@@ -1,0 +1,15 @@
+{
+  "generatedAt": null,
+  "date": null,
+  "picks": {
+    "all": [],
+    "byGenre": {}
+  },
+  "charts": {
+    "today": [],
+    "week": [],
+    "month": [],
+    "rising": []
+  },
+  "sources": []
+}

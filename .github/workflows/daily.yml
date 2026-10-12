@@ -1,0 +1,75 @@
+name: 오늘의 노래 수집 & 배포
+
+on:
+  schedule:
+    # 매일 06:07 (한국 시간) = 21:07 UTC
+    - cron: '7 21 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: today-song-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # 수집이 실패해도 기존 데이터로 사이트는 배포되도록 계속 진행
+      - name: 인기 차트 수집
+        id: collect
+        continue-on-error: true
+        run: npm run collect
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+
+      - name: 수집 데이터 커밋
+        if: steps.collect.outcome == 'success'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data
+          if git diff --cached --quiet; then
+            echo '변경된 데이터 없음'
+          else
+            git commit -m "data: $(TZ=Asia/Seoul date +%F) 차트 수집"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: 사이트 빌드
+        run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
