@@ -24,21 +24,21 @@ export default function GenrePicker({ selected, available, multiple = true, allL
       </Chip>
       {genres.map((g) => (
         <Chip key={g.id} active={selected.includes(g.id)} onClick={() => toggle(g.id)}>
-          {g.emoji} {g.label}
+          {g.label}
         </Chip>
       ))}
     </div>
   );
 }
 
-function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+export function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
     <button
       onClick={onClick}
       aria-pressed={active}
       className={clsx(
-        'px-3 py-1.5 rounded-full text-sm border-2 transition-colors cursor-pointer',
-        active ? 'bg-purple-500 border-purple-500 text-white' : 'bg-white border-purple-200 text-purple-600 hover:border-purple-400',
+        'px-3 py-1.5 rounded-full text-sm transition-colors cursor-pointer whitespace-nowrap',
+        active ? 'bg-white text-black' : 'bg-chip text-white hover:bg-[#333]',
       )}
     >
       {children}

@@ -1,40 +1,24 @@
-'use client';
-
-import Header from '@/components/common/Header';
-import Button from '@/components/common/Button';
 import Link from 'next/link';
+import Button from '@/components/common/Button';
+import AuthLayout, { AuthInput } from '@/components/common/AuthLayout';
 
 export default function Login() {
   return (
-    <main className='font-jua bg-purple-50 min-h-screen'>
-      <Header />
-      <section className='max-w-[1440px] mx-auto h-[60vh] flex flex-col items-center justify-center gap-6'>
-        <div className='flex flex-col items-center justify-center gap-10'>
-          <div className='text-4xl font-bold'>로그인</div>
-          <div className='flex flex-col items-center justify-center gap-2'>
-            <input
-              type='text'
-              placeholder='아이디'
-              className='w-full border-2 border-gray-300 rounded-full px-4 py-2 focus:outline-none min-w-[500px]'
-            />
-            <input
-              type='password'
-              placeholder='비밀번호'
-              className='w-full border-2 border-gray-300 rounded-full px-4 py-2 focus:outline-none min-w-[500px]'
-            />
-          </div>
-        </div>
-        <div className='flex items-center justify-center gap-3 w-full max-w-[500px]'>
-          <Button fullWidth disabled>
-            로그인
+    <AuthLayout title='로그인'>
+      <div className='w-full flex flex-col gap-3'>
+        <AuthInput type='text' placeholder='아이디' />
+        <AuthInput type='password' placeholder='비밀번호' />
+      </div>
+      <div className='w-full flex flex-col gap-3'>
+        <Button fullWidth size='lg' disabled>
+          로그인
+        </Button>
+        <Link href='/signup' className='w-full'>
+          <Button variant='secondary' fullWidth size='lg'>
+            회원가입
           </Button>
-          <Link href='/signup' className='w-full'>
-            <Button variant='secondary' fullWidth>
-              회원가입
-            </Button>
-          </Link>
-        </div>
-      </section>
-    </main>
+        </Link>
+      </div>
+    </AuthLayout>
   );
 }

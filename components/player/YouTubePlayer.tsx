@@ -1,11 +1,14 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
+import type { MediaControls } from './usePlayer';
 
 // YouTube IFrame Player API 중 이 사이트에서 쓰는 부분만 타입 선언
 interface YTPlayer {
   loadVideoById(videoId: string): void;
   playVideo(): void;
+  pauseVideo(): void;
+  getPlayerState(): number;
   destroy(): void;
 }
 
@@ -35,6 +38,8 @@ declare global {
 }
 
 const ENDED = 0;
+const PLAYING = 1;
+const PAUSED = 2;
 
 let apiPromise: Promise<YTNamespace> | null = null;
 
@@ -64,19 +69,35 @@ interface YouTubePlayerProps {
   onEnded: () => void;
   // 101/150: 퍼가기 금지 영상, 100: 삭제/비공개 영상, -1: API 로드 실패
   onError: (code: number) => void;
+  onPlayingChange: (playing: boolean) => void;
+  controlsRef: RefObject<MediaControls | null>;
 }
 
-export default function YouTubePlayer({ videoId, onEnded, onError }: YouTubePlayerProps) {
+export default function YouTubePlayer({ videoId, onEnded, onError, onPlayingChange, controlsRef }: YouTubePlayerProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayer | null>(null);
   const readyRef = useRef(false);
   // 플레이어 준비 전에 다른 곡이 선택되면 준비된 뒤 재생
   const pendingRef = useRef<string | null>(null);
-  const handlers = useRef({ onEnded, onError });
+  const handlers = useRef({ onEnded, onError, onPlayingChange });
 
   useEffect(() => {
-    handlers.current = { onEnded, onError };
-  }, [onEnded, onError]);
+    handlers.current = { onEnded, onError, onPlayingChange };
+  }, [onEnded, onError, onPlayingChange]);
+
+  useEffect(() => {
+    controlsRef.current = {
+      toggle: () => {
+        const player = playerRef.current;
+        if (!player || !readyRef.current) return;
+        if (player.getPlayerState() === PLAYING) player.pauseVideo();
+        else player.playVideo();
+      },
+    };
+    return () => {
+      controlsRef.current = null;
+    };
+  }, [controlsRef]);
 
   useEffect(() => {
     let cancelled = false;
@@ -105,6 +126,8 @@ export default function YouTubePlayer({ videoId, onEnded, onError }: YouTubePlay
               else e.target.playVideo();
             },
             onStateChange: (e) => {
+              if (e.data === PLAYING) handlers.current.onPlayingChange(true);
+              if (e.data === PAUSED || e.data === ENDED) handlers.current.onPlayingChange(false);
               if (e.data === ENDED) handlers.current.onEnded();
             },
             onError: (e) => handlers.current.onError(e.data),
